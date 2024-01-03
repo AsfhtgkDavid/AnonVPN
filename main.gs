@@ -1,17 +1,16 @@
 proxyes = {}
-host_shell = get_shell
-curr_shell = get_shell
-comps = []
 
+go = function(sh, ip, pass)
+    return sh.connect_service(ip, 22, "root", pass)
+end function
+
+shell = get_shell
 for ip, pass in proxyes
-    curr_shell = curr_shell.connect_service(ip, 22, "root", pass)
-    if not curr_shell then continue
-    comps.push(curr_shell.host_computer)
+    nextShell = go(shell, ip, pass)
+    if not nextShell then exit("fail")
+    nextShell.host_computer.touch("/var", "system.tmp")
+    nextShell.host_computer.File("/var/system.tmp").move("/var", "system.log")
+    shell = nextShell
 end for
 
-for comp in comps
-    comp.touch("/var", "system.tmp")
-    comp.File("/var/system.tmp").move("/var", "system.log")
-end for
-
-curr_shell.start_terminal
+nextShell.start_terminal
