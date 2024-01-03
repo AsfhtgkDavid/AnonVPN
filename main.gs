@@ -7,10 +7,14 @@ end function
 shell = get_shell
 for ip, pass in proxyes
     nextShell = go(shell, ip, pass)
-    if not nextShell then exit("fail")
+    if not nextShell then 
+        print("Proxy "+ip+" doesn't respond")
+        continue
+    end if
     nextShell.host_computer.touch("/var", "system.tmp")
     nextShell.host_computer.File("/var/system.tmp").move("/var", "system.log")
     shell = nextShell
+    print("Connected to "+ip)
 end for
 
 nextShell.start_terminal
