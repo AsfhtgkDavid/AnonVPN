@@ -8,7 +8,7 @@ shell = get_shell
 for ip, pass in proxyes
     nextShell = go(shell, ip, pass)
     if not nextShell then 
-        print("Proxy "+ip+" doesn't respond")
+        print("<color=#FF0000>Proxy "+ip+" doesn't respond</color>")
         continue
     end if
     nextShell.host_computer.touch("/var", "system.tmp")
@@ -17,4 +17,4 @@ for ip, pass in proxyes
     print("Connected to "+ip)
 end for
 
-nextShell.start_terminal
+shell.start_terminal
